@@ -1,222 +1,116 @@
-# 🧠 GitHub Commit Lab (Github-Contribution-Graph-Hack)
+# ChaRT
 
-Create **custom patterns, text, or designs** on your GitHub contribution graph using automated commits.
+Render custom patterns and text onto your GitHub contribution graph using automated commits. Each pixel becomes a real commit with a past date, translated into the graph's grid of 7 rows by 52 columns.
 
-This project is a **Python-based script** that takes a generated `pattern.json` fi
+---
 
-> 🎯 Built for learning, fun, and open-source experimentation.
+## How it works
 
+The GitHub contribution graph is a grid: 7 rows (days of the week) by 52 columns (weeks of the year). This script reads a pattern definition file, maps each filled cell to a calendar date, and generates commits with that date. GitHub renders them as colored cells on the graph.
 
-## ✨ What Does This Project Do?
+The result is a real commit history, not a visual hack. Each cell represents actual Git objects with valid timestamps.
 
-#### 🕰️Act as a Time Machine for Your GitHub Graph
+---
 
-Think of this project as a **time machine** 🚀 for your GitHub contribution graph.
+## Requirements
 
-We all have moments where:
-- We were inactive for months
-- Made mistakes
-- Forgot to push code
-- Or simply didn’t know GitHub well enough
+- Python 3.8 or later
+- Git (local installation)
+- A GitHub repository to commit into
+- A generated `pattern.json` file
 
-This tool lets you **travel back in time** and visualize patterns on your contribution graph by converting a generated `pattern.json` into **real commits with past dates**.
+---
 
-It doesn’t change who you are —  
-it just helps you **experiment, learn, and have fun** with how GitHub graphs work.
+## Setup
 
-> ✨ Wash away old gaps, explore commit history mechanics, and create something visually cool — responsibly.
+### 1. Generate a pattern
 
+Create a `pattern.json` file that defines your design as a 7-row grid. Each string in the array represents one row. Use any character for filled cells and spaces for empty cells.
 
-## 🖼 Example Output
-Here’s what a generated pattern looks like on a GitHub profile:
+Example pattern (draws the letter "C"):
 
-![Contribution Graph Example](assets/patternBeforeAfter.png)
+```json
+[
+  "  XXXXXX  ",
+  " XX    XX ",
+  " XX       ",
+  " XX       ",
+  " XX       ",
+  " XX    XX ",
+  "  XXXXXX  "
+]
+```
 
+### 2. Create a target repository
 
-
-## 🧠 How It Works (Simple Explanation)
-
-GitHub contribution graph is:
-- **7 rows** → days of the week  
-- **52 columns** → weeks in a year  
-
-This script:
-1. Reads your pattern grid  
-2. Converts active cells into commit dates  
-3. Creates commits using Git  
-4. GitHub shows them as green dots  
-
-No fake rendering — **real commits, real graph**.
-
-
-## 🚀 How To Use
-
-
-### 1️⃣ Generate `pattern.json`
-
-This script **requires a pattern file**.
-
-You can generate it using my pattern generator website or from my repository:
-
- 🌐 **GitHub Pattern Generator**  
-👉 https://github-pattern-generator.web.app/
-
-
-Steps:
-- Open the website  
-- Design your text or pattern  
-- Download `pattern.json`  
-- Place it in this repository by replacing old "pattern.json" 
-
-#### 🖼 Website Generated Pattern Example
-Here’s what a generated pattern looks like and remember to download:
-
-![Website Pattern Example](assets/web-example.png)
-
-
-
-## 2️⃣ Create a New GitHub Repository
-
-- Create a **new public repository** on GitHub
-- This repository will be used to generate contribution commits
-- Prefer using an **empty repo**
+Create a new public repository on GitHub. This is where the pattern commits will be written. An empty repository is recommended.
 
 Clone it locally:
 
 ```bash
-git clone <your-new-repo-url>
-cd <your-new-repo-name>
+git clone <repository-url>
+cd <repository-name>
 ```
 
+### 3. Copy the script files
 
-## 3️⃣ Clone the Tool Repository (Temporary)
+Copy `script.py` and `pattern.json` from this repository into your target repository. The script must be at the root of the target repository.
 
-Clone the tool repository to get the required script files:
-
-```bash
-git clone https://github.com/aurafarmerone/github-contribution-graph-hack.git
-```
-
-This repository contains:
-
-* Commit generation script
-* Supporting files
-
-
-## 4️⃣ Move Required Files Into Your Repo
-
-* Copy the required script files from the cloned tool repository
-* Paste them into **your new repository directory**
-* Ensure the script file is present in the repo root
-
-⚠️ **Important**
-After copying files:
-
-* **Delete the cloned tool repository**
-* This avoids `.git` conflicts and unexpected errors
-
-
-## 5️⃣ Replace `pattern.json`
-
-* Delete the existing `pattern.json`
-* Paste your downloaded `pattern.json`
-* Ensure the filename is exactly:
-
-```text
-pattern.json
-```
-
-
-## 6️⃣ Push Initial Setup to GitHub
-
-Before running the script, push the setup:
+### 4. Push the initial setup
 
 ```bash
 git add .
-git commit -m "Initial setup for contribution pattern"
+git commit -m "Initialize pattern commit setup"
 git push origin main
 ```
 
-
-## 7️⃣ Run the Script
-
-Run the script:
+### 5. Run the script
 
 ```bash
 python script.py
 ```
 
-When prompted, enter the year:
+When prompted, enter the year you want the pattern to appear on:
 
-```text
-Enter year to draw pattern: 2023
+```
+Enter year to draw pattern: 2025
 ```
 
-This will:
+The script will generate commits, push them to your repository, and the pattern will appear on your GitHub contribution graph.
 
-* Generate real commits
-* Assign past dates
-* Encode your pattern into the GitHub contribution graph
+---
 
-⏳ Execution time depends on pattern size.
+## Pattern file format
 
+The `pattern.json` file must contain an array of 7 strings, each with the same length. Each character position maps to a cell on the contribution graph:
 
+- A space character produces an empty cell
+- Any non-space character produces a filled cell
 
-## 8️⃣ View Result on GitHub 🎉
+The grid alignment starts from the first Sunday of the specified year. Each string index corresponds to a day of the week (index 0 = Sunday, index 6 = Saturday). Each position within a string corresponds to a week offset from the start date.
 
-* Open your GitHub profile
-* Scroll to **Contribution Graph**
-* Your custom pattern will appear as green dots
+---
 
-⏰ GitHub may take a few minutes to update.
+## Configuration
 
+The script supports the following constants at the top of `script.py`:
 
-## 📺 **Full YouTube Walkthrough** 
-### 🎥 Video Tutorial
+| Constant | Default | Description |
+|---|---|---|
+| `PATTERN_FILE` | pattern.json | Path to the pattern definition file |
+| `FILE_PATH` | info.txt | File modified for each commit |
+| `COMMITS_PER_PIXEL` | 5 | Number of commits per filled cell (controls shade intensity) |
 
-[![GitHub Contribution Graph Hack Tutorial](assets/thumbnail.png)](https://youtu.be/OQpGpr-m42s)
+Adjust `COMMITS_PER_PIXEL` to control the shade of green on the graph. Higher values produce darker cells.
 
-👉 Video Link: https://youtu.be/OQpGpr-m42s
+---
 
+## Disclaimer
 
+This project generates real Git commits with custom dates. It is designed for educational and artistic purposes. Do not use it to misrepresent your activity or to gain unfair advantage. Integrity in your work matters more than the appearance of your contribution graph.
 
-## ⚠️ Disclaimer
+---
 
-This project is created **just for fun, learning, and experimentation**.
+## License
 
-❗ Please do **NOT**:
-- Mislead others using your contribution graph  
-- Claim fake activity during interviews  
-- Use this for unfair advantages  
-
-Be honest — skills matter more than graphs.
-
-
-## 🤝 Contributing
-
-Want to improve this project?
-
-Please read **CONTRIBUTING.md** for guidelines on:
-- Reporting issues  
-- Suggesting features  
-- Submitting pull requests  
-
-All contributions are welcome ❤️
- 
-
-## 📜 License
-
-This project is licensed under the **MIT License** — feel free to use, modify, and distribute.
-
-
-
-## ❤️ Credits
-
-Made with ❤️ by **Aura Farmer**  
-If you find this project useful, consider giving it a ⭐ on GitHub!
-
-
-
-
-
-
+MIT

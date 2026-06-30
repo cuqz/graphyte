@@ -5,30 +5,17 @@ import sys
 import time
 from datetime import datetime, timedelta
 
-# ============================================
-# GitHub Contribution Graph Hack
-#
-# Created by Aura Farmer
-# GitHub: https://github.com/aurafarmerone
-#
-# If you like this project, give it a ⭐
-# ============================================
-
 PATTERN_FILE = "pattern.json"
 FILE_PATH = "info.txt"
+COMMITS_PER_PIXEL = 5
 
-COMMITS_PER_PIXEL = 5   # lighter than darkest green
 
-
-# -------------------------------
-# Loading Animation (3 seconds)
-# -------------------------------
 def loading_animation(duration=3):
     animation = "|/-\\"
     end_time = time.time() + duration
     i = 0
 
-    sys.stdout.write("\nInitializing GitHub Pattern Committer ")
+    sys.stdout.write("\nInitializing")
     sys.stdout.flush()
 
     while time.time() < end_time:
@@ -38,53 +25,9 @@ def loading_animation(duration=3):
         sys.stdout.write("\b")
         i += 1
 
-    print("☑️")
+    print(" done")
 
 
-# -------------------------------
-# Credit Banner (Start)
-# -------------------------------
-def show_start_credit():
-    print(r"""
-          
-┏┓• ┓┏  ┓   ┏┓        •   ┓   ┓ 
-┃┓┓╋┣┫┓┏┣┓  ┃ ┏┓┏┳┓┏┳┓┓╋  ┃ ┏┓┣┓
-┗┛┗┗┛┗┗┻┗┛  ┗┛┗┛┛┗┗┛┗┗┗┗  ┗┛┗┻┗┛                       
-
-Created by Aura Farmer
-GitHub: https://github.com/aurafarmerone
-----------------------------------------
-""")
-
-
-# -------------------------------
-# Credit Banner (End)
-# -------------------------------
-def show_end_credit():
-    print(r"""
-          
-┳┳┓┳┏┓┏┓┳┏┓┳┓  ┏┓┏┓┏┓┏┓┏┓┳┓  ╻
-┃┃┃┃┗┓┗┓┃┃┃┃┃  ┃┃┣┫┗┓┗┓┣ ┃┃  ┃
-┛ ┗┻┗┛┗┛┻┗┛┛┗  ┣┛┛┗┗┛┗┛┗┛┻┛  •
-                                                        
-
-☑️ History Has Been Rewritten.  
-☑️ The Timeline Has Changed.
-☑️ Success! Pretend This Was Hard.           
-
-----------------------------------------
-⭐ If you like this project, give it a star on GitHub!
-👉 https://github.com/aurafarmerone/github-contribution-graph-hack
-
-Made with ❤️  by Aura Farmer
-----------------------------------------
-""")
-
-
-
-# -------------------------------
-# Git Commit (FIXED)
-# -------------------------------
 def git_commit(message, commit_date):
     subprocess.run(["git", "add", FILE_PATH], check=True)
 
@@ -98,7 +41,7 @@ def git_commit(message, commit_date):
         [
             "git",
             "commit",
-            "--allow-empty",   # ✅ FIX: allows commit even if no file changes
+            "--allow-empty",
             "-m",
             message,
             "--date",
@@ -108,7 +51,7 @@ def git_commit(message, commit_date):
         check=True
     )
 
-    print(f"{message} successful ✔️")
+    print(f"{message} successful")
 
 
 def git_push():
@@ -122,7 +65,7 @@ def load_pattern():
 
 def first_sunday(year):
     d = datetime(year, 1, 1)
-    while d.weekday() != 6:  # Sunday
+    while d.weekday() != 6:
         d += timedelta(days=1)
     return d
 
@@ -134,7 +77,7 @@ def make_commits_from_pattern(year):
     for row_idx, row in enumerate(pattern):
         for col_idx, char in enumerate(row):
             if char == " ":
-                continue  # empty pixel
+                continue
 
             commit_date = start_date + timedelta(
                 weeks=col_idx,
@@ -152,14 +95,10 @@ def make_commits_from_pattern(year):
     git_push()
 
 
-# -------------------------------
-# Entry Point
-# -------------------------------
 if __name__ == "__main__":
     loading_animation(3)
-    show_start_credit()
 
-    year = int(input("👉 Enter year to draw pattern 📆 ➤ "))
+    year = int(input("Enter year to draw pattern: "))
     make_commits_from_pattern(year)
 
-    show_end_credit()
+    print("Done")
