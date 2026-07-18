@@ -7,7 +7,7 @@ from datetime import datetime, timedelta
 
 PATTERN_FILE = "pattern.json"
 FILE_PATH = "info.txt"
-COMMITS_PER_PIXEL = 5
+COMMITS_PER_PIXEL = 10  # ← Adjust 1–16 for shade intensity. Higher = darker green cells.
 
 
 def loading_animation(duration=3):
