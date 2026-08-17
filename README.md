@@ -1,4 +1,4 @@
-# ChaRT
+# Graphyte
 
 Render custom patterns and text onto your GitHub contribution graph using automated commits. Each pixel becomes a real commit with a past date, translated into the graph's grid of 7 rows by 52 columns.
 
@@ -88,6 +88,8 @@ The `pattern.json` file must contain an array of 7 strings, each with the same l
 - Any non-space character produces a filled cell
 
 The grid alignment starts from the first Sunday of the specified year. Each string index corresponds to a day of the week (index 0 = Sunday, index 6 = Saturday). Each position within a string corresponds to a week offset from the start date.
+
+Keep rows at 52 characters max. The contribution graph only shows 52 weeks per year, so longer rows spill into the next year.
 
 ---
 
